@@ -14,3 +14,12 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+//Auth::routes();
+
+Route::group(['prefix'=>'connexion','namspace'=>'Auth'],function(){
+        
+});
+
+
+Route::get('/home', 'HomeController@index')->name('home');
