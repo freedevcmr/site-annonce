@@ -1,14 +1,59 @@
 
 // Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
+// @import url('https://fonts.googleapis.com/css?family=Nunito');
 
 // Variables
-@import 'variables';
+// @import 'variables';
 
 // Bootstrap
-@import '~bootstrap/scss/bootstrap';
+// @import '~bootstrap/scss/bootstrap';
 
-.navbar-laravel {
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
-}
+// .navbar-laravel {
+//   background-color: #fff;
+//   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+// }
+
+
+    // Fonts
+    @import url('https://fonts.googleapis.com/css?family=Sniglet');
+    // Bootstrap
+    @import '~bootstrap/scss/bootstrap';
+    html {
+        font-size: 0.8rem;
+    }
+    @include media-breakpoint-up(sm) {
+        html {
+            font-size: 1rem;
+        }
+    }
+    @include media-breakpoint-up(lg) {
+        html {
+            font-size: 1.4rem;
+        }
+    }
+    body {
+        background-color: #e47517;
+        font-family: 'Sniglet', cursive;
+    }
+    .navbar {
+        background-color: #e4751788;
+    }
+    .navbar-expand-md {
+        @include font-size(1.4rem);
+    }
+    .navbar-expand {
+        padding: 0;
+        font-size: 0.8rem;
+    }
+
+    .base {
+      fill:#003dd4;
+      cursor: pointer;
+      -webkit-transition: fill .5s ease-out;
+      -moz-transition: fill .5s ease-out;
+      -o-transition: fill .5s ease-out;
+      transition: fill .5s ease-out;
+  }
+  .base:hover {
+      fill: #bd4;
+  }

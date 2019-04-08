@@ -11,15 +11,32 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 //Auth::routes();
-
-Route::group(['prefix'=>'connexion','namspace'=>'Auth'],function(){
-        
+//route pour la connection 
+Route::group(['prefix'=>'connexion','namespace'=>'Auth'],function(){
+    
+    Route::get('/','LoginController@showLoginForm')->name('login');
+    Route::post('/','LoginController@login');
 });
 
+Route::post('deconnexion', 'Auth\LoginController@logout')->name('logout');
 
-Route::get('/home', 'HomeController@index')->name('home');
+//route pour l'inscription
+Route::group(['prefix'=>'enregistrement','namespace'=>'Auth'],function(){
+    Route::get('/','RegisterController@showRegistrationForm')->name('register');
+    Route::post('/','RegisterController@register');
+});
+
+Route::group(['prefix'=>'passe','namespace'=>'Auth'],function(){
+    Route::get('change','ForgotPasswordController@showLinkRequestForm')->name('password.request');
+    Route::post('email', 'ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+    Route::get('change/{token}', 'ResetPasswordController@showResetForm')->name('password.reset');
+    Route::post('change', 'ResetPasswordController@reset')->name('password.update');
+});
+
+// Route::get('/home', 'HomeController@index')->name('home');
+Route::view('/', 'home')->name('home');
