@@ -32,4 +32,11 @@ class AdRepository
             ->latest()
             ->paginate(3);
     }
+
+    public function getPhotos($ad)
+    {
+        return $ad->photos()->get();
+    }
+
+
 }
