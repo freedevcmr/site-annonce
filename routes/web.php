@@ -40,3 +40,13 @@ Route::group(['prefix'=>'passe','namespace'=>'Auth'],function(){
 
 // Route::get('/home', 'HomeController@index')->name('home');
 Route::view('/', 'home')->name('home');
+
+Route::resource('annonces','AdController')->parameters([
+                                                        'annonces'=>'ad'
+                                                    ])->except(['index','show','destroy']);
+
+Route::group(['prefix'=>'annonces'],function(){
+    Route::get('voir/{ad}','AdController@show')->name('annonces.show');
+     Route::get('{region?}/{departement?}/{commune?}','AdController@index')->name('annonces.index');
+     Route::post('recherche','AdController@search')->name('annonces.search')->middleware('ajax');
+});
