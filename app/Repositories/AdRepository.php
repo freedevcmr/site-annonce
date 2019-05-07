@@ -38,5 +38,10 @@ class AdRepository
         return $ad->photos()->get();
     }
 
+    public function create($data)
+    {
+        return Ad::create($data);
+    }
+
 
 }

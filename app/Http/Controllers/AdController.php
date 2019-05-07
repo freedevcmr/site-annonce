@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ad;
+use Carbon\Carbon;
 use App\Models\Region;
+use App\Models\Upload;
 use App\Models\Category;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Http\Requests\AdStore;
 use App\Repositories\AdRepository;
 
 class AdController extends Controller
@@ -50,9 +54,14 @@ class AdController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request) 
     {
-        //
+        if(!$request->session()->has('index')) {
+            $request->session()->put('index', Str::random(30));
+        }
+        $categories = Category::select('name', 'id')->oldest('name')->get();
+        $regions = Region::oldest('name')->get();
+        return view('create', compact('categories', 'regions'));
     }
 
     /**
@@ -61,9 +70,28 @@ class AdController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AdStore $request)
     {
-        //
+        $commune = json_decode(file_get_contents('https://geo.api.gouv.fr/communes/' . $request->commune), true);
+        $ad = $this->adRepository->create([
+            'title' => $request->title,
+            'texte' => $request->texte,
+            'category_id' => $request->category,
+            'region_id' => $request->region,
+            'departement' => $request->departement,
+            'commune' => $request->commune,
+            'commune_name' => $commune['nom'],
+            'commune_postal' => $commune['codesPostaux'][0],
+            'user_id' => auth()->check() ? auth()->id() : 0,
+            'pseudo' => auth()->check() ? auth()->user()->name :$request->pseudo,
+            'email' => auth()->check() ? auth()->user()->email : $request->email,
+            'limit' => Carbon::now()->addWeeks($request->limit),
+        ]);
+        if($request->session()->has('index')) {
+            $index = $request->session()->get('index');
+            Upload::whereIndex($index)->update(['ad_id' => $ad->id, 'index' => 0]);
+        }
+        return view('adconfirm');
     }
 
     /**

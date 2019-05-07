@@ -50,3 +50,10 @@ Route::group(['prefix'=>'annonces'],function(){
      Route::get('{region?}/{departement?}/{commune?}','AdController@index')->name('annonces.index');
      Route::post('recherche','AdController@search')->name('annonces.search')->middleware('ajax');
 });
+
+Route::middleware('ajax')->group(function () {
+    Route::post('images-save', 'UploadImagesController@store')->name('save-images');
+    Route::delete('images-delete', 'UploadImagesController@destroy')->name('destroy-images');
+    Route::get('images-server','UploadImagesController@getServerImages')->name('server-images');
+    
+});
